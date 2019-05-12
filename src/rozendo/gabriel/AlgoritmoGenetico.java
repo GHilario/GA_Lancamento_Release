@@ -1,5 +1,6 @@
 package rozendo.gabriel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,10 +22,10 @@ public class AlgoritmoGenetico {
 	
 	//definindo numeros padroes
 	public AlgoritmoGenetico() {
-		this.numGeracoes = 100;
-		this.tamanhoPopulacao = 100;
+		this.numGeracoes = 20;
+		this.tamanhoPopulacao = 50000;
 		this.elitismo = 1;
-		this.taxaMutacao = 0.005;
+		this.taxaMutacao = 0.001;
 	}
 
 	//metodos SET
@@ -144,7 +145,8 @@ public class AlgoritmoGenetico {
 		for(int i=0; i< this.parametrosDoProblema.tamanhoCromossomo;i++) {
 			System.out.print("|" + this.populacao.get(0)[i] + "|");
 		}
-		System.out.println("\n________________________________");
+		System.out.println("\nScore:" + this.parametrosDoProblema.CalcularScore(this.populacao.get(0)));
+		System.out.println("________________________________");
 	}
 	
 	
