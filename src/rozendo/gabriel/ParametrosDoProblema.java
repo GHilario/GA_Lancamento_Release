@@ -5,7 +5,7 @@ public class ParametrosDoProblema {
 	//parametros estaticos
 	public static int numeroDeRelease = 3;
 	public static int tamanhoCromossomo = 10;
-	public static int orcamentoRelease = 120;
+	public static int orcamentoRelease = 125;
 	
 	
 		//Prioridades de cada cliente
