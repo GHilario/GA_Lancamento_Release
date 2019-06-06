@@ -14,6 +14,7 @@ public class AlgoritmoGenetico {
 	private int numGeracoes;
 	private int elitismo;
 	private double taxaMutacao;
+	private double taxaCruzamento;
 	private ArrayList<int[]> populacao = new ArrayList();
 	private ArrayList<int[]> novaPopulacao = new ArrayList();
 	
@@ -22,10 +23,11 @@ public class AlgoritmoGenetico {
 	
 	//definindo numeros padroes
 	public AlgoritmoGenetico() {
-		this.numGeracoes = 20;
-		this.tamanhoPopulacao = 50000;
+		this.numGeracoes = 2000;
+		this.tamanhoPopulacao = 100;
 		this.elitismo = 1;
-		this.taxaMutacao = 0.001;
+		this.taxaMutacao = 0.3;
+		this.taxaCruzamento = 0.8;
 	}
 
 	//metodos SET
@@ -48,7 +50,7 @@ public class AlgoritmoGenetico {
 	
 	//GERAR PRIMEIRA POPULACAO
 	public void primeiraGeracao() {
-		Random random = new Random();;
+		Random random = new Random();
 		int[] individuo;
 		for(int i=0; i< this.tamanhoPopulacao; i++) {
 			individuo = new int[this.parametrosDoProblema.tamanhoCromossomo];
@@ -66,17 +68,31 @@ public class AlgoritmoGenetico {
 		Random random = new Random();
 		int[] individuo;
 		for(int i= this.elitismo; i<this.tamanhoPopulacao;i++) {
-		individuo = new int[this.parametrosDoProblema.tamanhoCromossomo];
-		int pai = this.Sorteio();
-		int mae = this.Sorteio();
-		for(int o=0; o<this.parametrosDoProblema.tamanhoCromossomo;o++) {
-			if(i % 2 == 0)
-				individuo[o] = this.populacao.get(pai)[o];
-			else
-				individuo[o] = this.populacao.get(mae)[o];
-		}
-		individuo = this.parametrosDoProblema.CorrigirIndividuo(individuo);
-		this.novaPopulacao.add(individuo);
+			individuo = new int[this.parametrosDoProblema.tamanhoCromossomo];
+			int pai = this.Sorteio();
+			int mae = this.Sorteio();
+			//olhando taxa de cruzamento
+			double prob = random.nextDouble();
+			if(prob >= this.taxaCruzamento) {
+				if( this.parametrosDoProblema.CalcularScore(this.populacao.get(pai)) > this.parametrosDoProblema.CalcularScore(this.populacao.get(mae)) ) {
+					individuo = this.populacao.get(pai);
+				}
+				else {
+					individuo = this.populacao.get(mae);
+				}
+			}
+			else {
+				for(int o=0; o<this.parametrosDoProblema.tamanhoCromossomo;o++) {
+					if(i % 2 == 0)
+						individuo[o] = this.populacao.get(pai)[o];
+					else
+						individuo[o] = this.populacao.get(mae)[o];
+				}
+				individuo = this.parametrosDoProblema.CorrigirIndividuo(individuo);
+				
+			}
+			
+			this.novaPopulacao.add(individuo);
 		}
 	}
 	
